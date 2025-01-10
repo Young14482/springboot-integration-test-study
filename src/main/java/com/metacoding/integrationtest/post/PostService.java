@@ -6,15 +6,11 @@ import com.metacoding.integrationtest._core.error.exception.Exception404;
 import com.metacoding.integrationtest.user.User;
 import com.metacoding.integrationtest.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -34,6 +30,14 @@ public class PostService {
     public List<PostResponse.DTO> 게시글목록보기(){
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         List<Post> posts = postRepository.findAll(sort);
+        // DTO에 직접 추가하기
+        //        List<Integer> ids = posts.stream()
+//                .map(post -> post.getUser().getId())
+//                .distinct()
+//                .toList();
+//
+//        // select * from user_tb where id in (ids);
+//        List<User> users = userRepository.findByIds(ids);
         return posts.stream().map(post -> new PostResponse.DTO(post)).toList();
     }
 
